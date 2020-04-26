@@ -99,7 +99,7 @@ public class WordGuessClient extends Application {
 			//newScene(primaryStage);
 		});
 		VBox clientgui = new VBox();
-		clientgui.getChildren().addAll(ports, ipaddress, connect, refresh, listItems2);
+		clientgui.getChildren().addAll(ports, ipaddress, connect, refresh);
 		clientgui.setAlignment(Pos.CENTER);
 		BorderPane clientBox = new BorderPane();
 		clientBox.setCenter(clientgui);
