@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 
+import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -17,6 +18,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javafx.util.Duration;
 
 public class WordGuessClient extends Application {
 	TextField s1,s2,s3,s4, c1, c2, clientplay1, letter, word;
@@ -100,195 +102,235 @@ public class WordGuessClient extends Application {
 								clientConnection.clientinfo.guessedgames = clientinfo.guessedgames;
 								clientConnection.clientinfo.guessedcountries = clientinfo.guessedcountries;
 								clientConnection.clientinfo.playagain = clientinfo.playagain;
-								//System.out.println("Food: "+foodguessed);
-								//System.out.println("Games: "+gamesguessed);
-								//System.out.println("Countries: "+countriesguessed);
-								//System.out.println("server Food: "+clientConnection.clientinfo.guessedfoods);
-								//System.out.println("server Games: "+clientConnection.clientinfo.guessedgames);
-								//System.out.println("server Countries: "+clientConnection.clientinfo.guessedcountries);
 								if(clientConnection.clientinfo.won==true || clientConnection.clientinfo.lost==true)
 								{
-									clientConnection.clientinfo = new Wordguess();
-									foodguessed = false;
-									gamesguessed = false;
-									countriesguessed = false;
-									Wordguess tempinfo = new Wordguess();
-									clientConnection.clientinfo.won=false;
-									clientConnection.clientinfo.lost=false;
-									clientConnection.clientinfo.category = "";
-									clientConnection.clientinfo.guess = "";
-									clientConnection.clientinfo.wordguess = "";
-									clientConnection.clientinfo.guessedfoods = false;
-									clientConnection.clientinfo.guessedgames = false;
-									clientConnection.clientinfo.guessedcountries = false;
-									tempinfo.won = clientConnection.clientinfo.won;
-									tempinfo.lost = clientConnection.clientinfo.lost;
-									tempinfo.category = clientConnection.clientinfo.category;
-									tempinfo.guess = clientConnection.clientinfo.guess;
-									tempinfo.wordguess = clientConnection.clientinfo.wordguess;
-									tempinfo.guessedfoods = clientConnection.clientinfo.guessedfoods;
-									tempinfo.guessedgames = clientConnection.clientinfo.guessedgames;
-									tempinfo.guessedcountries = clientConnection.clientinfo.guessedcountries;
-									clientConnection.send(tempinfo);
-									playagain(primaryStage);
-									listItems2.getItems().clear();
+									PauseTransition pause = new PauseTransition(Duration.seconds(2));
+								    pause.setOnFinished(event -> {
+										clientConnection.clientinfo = new Wordguess();
+										foodguessed = false;
+										gamesguessed = false;
+										countriesguessed = false;
+										Wordguess tempinfo = new Wordguess();
+										clientConnection.clientinfo.won=false;
+										clientConnection.clientinfo.lost=false;
+										clientConnection.clientinfo.category = "";
+										clientConnection.clientinfo.guess = "";
+										clientConnection.clientinfo.wordguess = "";
+										clientConnection.clientinfo.guessedfoods = false;
+										clientConnection.clientinfo.guessedgames = false;
+										clientConnection.clientinfo.guessedcountries = false;
+										clientConnection.clientinfo.playagain = false;
+										tempinfo.playagain = clientConnection.clientinfo.playagain;
+										tempinfo.won = clientConnection.clientinfo.won;
+										tempinfo.lost = clientConnection.clientinfo.lost;
+										tempinfo.category = clientConnection.clientinfo.category;
+										tempinfo.guess = clientConnection.clientinfo.guess;
+										tempinfo.wordguess = clientConnection.clientinfo.wordguess;
+										tempinfo.guessedfoods = clientConnection.clientinfo.guessedfoods;
+										tempinfo.guessedgames = clientConnection.clientinfo.guessedgames;
+										tempinfo.guessedcountries = clientConnection.clientinfo.guessedcountries;
+										clientConnection.send(tempinfo);
+										playagain(primaryStage);
+										listItems2.getItems().clear();
+									});
+				    				pause.play();
 								}
-								if((clientConnection.clientinfo.guessedfoods==true && gamesguessed ==true) || (foodguessed==true && clientConnection.clientinfo.guessedgames==true))
+								if((clientConnection.clientinfo.guessedfoods==true && gamesguessed ==true) || (foodguessed==true && clientConnection.clientinfo.guessedgames==true) || (clientConnection.clientinfo.playagain == true && (gamesguessed ==true && foodguessed ==true)))
 								{
 									//client guessed food and game category
-									Wordguess tempinfo = new Wordguess();
-									clientConnection.clientinfo.category = "";
-									clientConnection.clientinfo.guess = "";
-									clientConnection.clientinfo.wordguess = "";
-									clientConnection.clientinfo.guessedfoods = false;
-									clientConnection.clientinfo.guessedgames = false;
-									clientConnection.clientinfo.guessedcountries = false;
-									foodguessed=true;
-									gamesguessed =true;
-									tempinfo.won = clientConnection.clientinfo.won;
-									tempinfo.lost = clientConnection.clientinfo.lost;
-									tempinfo.category = clientConnection.clientinfo.category;
-									tempinfo.guess = clientConnection.clientinfo.guess;
-									tempinfo.wordguess = clientConnection.clientinfo.wordguess;
-									tempinfo.guessedfoods = clientConnection.clientinfo.guessedfoods;
-									tempinfo.guessedgames = clientConnection.clientinfo.guessedgames;
-									tempinfo.guessedcountries = clientConnection.clientinfo.guessedcountries;
-									clientConnection.send(tempinfo);
-									categorynofoodorgamesscene(primaryStage);
+									PauseTransition pause = new PauseTransition(Duration.seconds(2));
+								    pause.setOnFinished(event -> {
+								    	Wordguess tempinfo = new Wordguess();
+										clientConnection.clientinfo.category = "";
+										clientConnection.clientinfo.guess = "";
+										clientConnection.clientinfo.wordguess = "";
+										clientConnection.clientinfo.guessedfoods = false;
+										clientConnection.clientinfo.guessedgames = false;
+										clientConnection.clientinfo.guessedcountries = false;
+										foodguessed=true;
+										gamesguessed =true;
+										clientConnection.clientinfo.playagain = false;
+										tempinfo.playagain = clientConnection.clientinfo.playagain;
+										tempinfo.won = clientConnection.clientinfo.won;
+										tempinfo.lost = clientConnection.clientinfo.lost;
+										tempinfo.category = clientConnection.clientinfo.category;
+										tempinfo.guess = clientConnection.clientinfo.guess;
+										tempinfo.wordguess = clientConnection.clientinfo.wordguess;
+										tempinfo.guessedfoods = clientConnection.clientinfo.guessedfoods;
+										tempinfo.guessedgames = clientConnection.clientinfo.guessedgames;
+										tempinfo.guessedcountries = clientConnection.clientinfo.guessedcountries;
+										clientConnection.send(tempinfo);
+										categorynofoodorgamesscene(primaryStage);
+								    });
+				    				pause.play();
 								}
-								else if((clientConnection.clientinfo.guessedgames==true && countriesguessed ==true) || (clientConnection.clientinfo.guessedcountries==true && gamesguessed ==true))
+								else if((clientConnection.clientinfo.guessedgames==true && countriesguessed ==true) || (clientConnection.clientinfo.guessedcountries==true && gamesguessed ==true) || (clientConnection.clientinfo.playagain == true && (gamesguessed ==true && countriesguessed ==true)))
 								{
 									//client guessed games and countries category
-									Wordguess tempinfo = new Wordguess();
-									clientConnection.clientinfo.category = "";
-									clientConnection.clientinfo.guess = "";
-									clientConnection.clientinfo.wordguess = "";
-									clientConnection.clientinfo.guessedfoods = false;
-									clientConnection.clientinfo.guessedgames = false;
-									clientConnection.clientinfo.guessedcountries = false;
-									gamesguessed =true;
-									countriesguessed =true;
-									tempinfo.won = clientConnection.clientinfo.won;
-									tempinfo.lost = clientConnection.clientinfo.lost;
-									tempinfo.category = clientConnection.clientinfo.category;
-									tempinfo.guess = clientConnection.clientinfo.guess;
-									tempinfo.wordguess = clientConnection.clientinfo.wordguess;
-									tempinfo.guessedfoods = clientConnection.clientinfo.guessedfoods;
-									tempinfo.guessedgames = clientConnection.clientinfo.guessedgames;
-									tempinfo.guessedcountries = clientConnection.clientinfo.guessedcountries;
-									clientConnection.send(tempinfo);
-									categorynogamesorcountriesscene(primaryStage);
+									PauseTransition pause = new PauseTransition(Duration.seconds(2));
+								    pause.setOnFinished(event -> {
+										Wordguess tempinfo = new Wordguess();
+										clientConnection.clientinfo.category = "";
+										clientConnection.clientinfo.guess = "";
+										clientConnection.clientinfo.wordguess = "";
+										clientConnection.clientinfo.guessedfoods = false;
+										clientConnection.clientinfo.guessedgames = false;
+										clientConnection.clientinfo.guessedcountries = false;
+										gamesguessed =true;
+										countriesguessed =true;
+										clientConnection.clientinfo.playagain = false;
+										tempinfo.playagain = clientConnection.clientinfo.playagain;
+										tempinfo.won = clientConnection.clientinfo.won;
+										tempinfo.lost = clientConnection.clientinfo.lost;
+										tempinfo.category = clientConnection.clientinfo.category;
+										tempinfo.guess = clientConnection.clientinfo.guess;
+										tempinfo.wordguess = clientConnection.clientinfo.wordguess;
+										tempinfo.guessedfoods = clientConnection.clientinfo.guessedfoods;
+										tempinfo.guessedgames = clientConnection.clientinfo.guessedgames;
+										tempinfo.guessedcountries = clientConnection.clientinfo.guessedcountries;
+										clientConnection.send(tempinfo);
+										categorynogamesorcountriesscene(primaryStage);
+								    });
+				    				pause.play();
 								}
-								else if((clientConnection.clientinfo.guessedfoods==true && countriesguessed == true) || (foodguessed == true && clientConnection.clientinfo.guessedcountries==true))
+								else if((clientConnection.clientinfo.guessedfoods==true && countriesguessed == true) || (foodguessed == true && clientConnection.clientinfo.guessedcountries==true) || (clientConnection.clientinfo.playagain == true && (foodguessed ==true && countriesguessed ==true)))
 								{
 									//client guessed foods and countries category
-									Wordguess tempinfo = new Wordguess();
-									clientConnection.clientinfo.category = "";
-									clientConnection.clientinfo.guess = "";
-									clientConnection.clientinfo.wordguess = "";
-									clientConnection.clientinfo.guessedfoods = false;
-									clientConnection.clientinfo.guessedgames = false;
-									clientConnection.clientinfo.guessedcountries = false;
-									foodguessed = true;
-									countriesguessed =true;
-									tempinfo.won = clientConnection.clientinfo.won;
-									tempinfo.lost = clientConnection.clientinfo.lost;
-									tempinfo.category = clientConnection.clientinfo.category;
-									tempinfo.guess = clientConnection.clientinfo.guess;
-									tempinfo.wordguess = clientConnection.clientinfo.wordguess;
-									tempinfo.guessedfoods = clientConnection.clientinfo.guessedfoods;
-									tempinfo.guessedgames = clientConnection.clientinfo.guessedgames;
-									tempinfo.guessedcountries = clientConnection.clientinfo.guessedcountries;
-									clientConnection.send(tempinfo);
-									categorynofoodsorcountriesscene(primaryStage);
+									PauseTransition pause = new PauseTransition(Duration.seconds(2));
+								    pause.setOnFinished(event -> {
+										Wordguess tempinfo = new Wordguess();
+										clientConnection.clientinfo.category = "";
+										clientConnection.clientinfo.guess = "";
+										clientConnection.clientinfo.wordguess = "";
+										clientConnection.clientinfo.guessedfoods = false;
+										clientConnection.clientinfo.guessedgames = false;
+										clientConnection.clientinfo.guessedcountries = false;
+										foodguessed = true;
+										countriesguessed =true;
+										clientConnection.clientinfo.playagain = false;
+										tempinfo.playagain = clientConnection.clientinfo.playagain;
+										tempinfo.won = clientConnection.clientinfo.won;
+										tempinfo.lost = clientConnection.clientinfo.lost;
+										tempinfo.category = clientConnection.clientinfo.category;
+										tempinfo.guess = clientConnection.clientinfo.guess;
+										tempinfo.wordguess = clientConnection.clientinfo.wordguess;
+										tempinfo.guessedfoods = clientConnection.clientinfo.guessedfoods;
+										tempinfo.guessedgames = clientConnection.clientinfo.guessedgames;
+										tempinfo.guessedcountries = clientConnection.clientinfo.guessedcountries;
+										clientConnection.send(tempinfo);
+										categorynofoodsorcountriesscene(primaryStage);
+								    });
+				    				pause.play();
 								}
-								else if(clientConnection.clientinfo.guessedfoods==true)
+								else if(clientConnection.clientinfo.guessedfoods==true || (clientConnection.clientinfo.playagain == true && foodguessed ==true))
 								{
 									//client guessed foods
-									Wordguess tempinfo = new Wordguess();
-									foodguessed = true;
-									clientConnection.clientinfo.category = "";
-									clientConnection.clientinfo.guess = "";
-									clientConnection.clientinfo.wordguess = "";
-									clientConnection.clientinfo.guessedfoods = false;
-									clientConnection.clientinfo.guessedgames = false;
-									clientConnection.clientinfo.guessedcountries = false;
-									tempinfo.won = clientConnection.clientinfo.won;
-									tempinfo.lost = clientConnection.clientinfo.lost;
-									tempinfo.category = clientConnection.clientinfo.category;
-									tempinfo.guess = clientConnection.clientinfo.guess;
-									tempinfo.wordguess = clientConnection.clientinfo.wordguess;
-									tempinfo.guessedfoods = clientConnection.clientinfo.guessedfoods;
-									tempinfo.guessedgames = clientConnection.clientinfo.guessedgames;
-									tempinfo.guessedcountries = clientConnection.clientinfo.guessedcountries;
-									clientConnection.send(tempinfo);
-									categorynofoodscene(primaryStage);
+									PauseTransition pause = new PauseTransition(Duration.seconds(2));
+								    pause.setOnFinished(event -> {
+										Wordguess tempinfo = new Wordguess();
+										foodguessed = true;
+										clientConnection.clientinfo.category = "";
+										clientConnection.clientinfo.guess = "";
+										clientConnection.clientinfo.wordguess = "";
+										clientConnection.clientinfo.guessedfoods = false;
+										clientConnection.clientinfo.guessedgames = false;
+										clientConnection.clientinfo.guessedcountries = false;
+										clientConnection.clientinfo.playagain = false;
+										tempinfo.playagain = clientConnection.clientinfo.playagain;
+										tempinfo.won = clientConnection.clientinfo.won;
+										tempinfo.lost = clientConnection.clientinfo.lost;
+										tempinfo.category = clientConnection.clientinfo.category;
+										tempinfo.guess = clientConnection.clientinfo.guess;
+										tempinfo.wordguess = clientConnection.clientinfo.wordguess;
+										tempinfo.guessedfoods = clientConnection.clientinfo.guessedfoods;
+										tempinfo.guessedgames = clientConnection.clientinfo.guessedgames;
+										tempinfo.guessedcountries = clientConnection.clientinfo.guessedcountries;
+										clientConnection.send(tempinfo);
+										categorynofoodscene(primaryStage);
+								    });
+				    				pause.play();
 								}
-								else if(clientConnection.clientinfo.guessedgames==true)
+								else if(clientConnection.clientinfo.guessedgames==true || (clientConnection.clientinfo.playagain == true && gamesguessed ==true))
 								{
 									//client guessed games
-									Wordguess tempinfo = new Wordguess();
-									gamesguessed = true;
-									clientConnection.clientinfo.category = "";
-									clientConnection.clientinfo.guess = "";
-									clientConnection.clientinfo.wordguess = "";
-									clientConnection.clientinfo.guessedfoods = false;
-									clientConnection.clientinfo.guessedgames = false;
-									clientConnection.clientinfo.guessedcountries = false;
-									tempinfo.won = clientConnection.clientinfo.won;
-									tempinfo.lost = clientConnection.clientinfo.lost;
-									tempinfo.category = clientConnection.clientinfo.category;
-									tempinfo.guess = clientConnection.clientinfo.guess;
-									tempinfo.wordguess = clientConnection.clientinfo.wordguess;
-									tempinfo.guessedfoods = clientConnection.clientinfo.guessedfoods;
-									tempinfo.guessedgames = clientConnection.clientinfo.guessedgames;
-									tempinfo.guessedcountries = clientConnection.clientinfo.guessedcountries;
-									clientConnection.send(tempinfo);
-									categorynogamesscene(primaryStage);
+									PauseTransition pause = new PauseTransition(Duration.seconds(2));
+								    pause.setOnFinished(event -> {
+										Wordguess tempinfo = new Wordguess();
+										gamesguessed = true;
+										clientConnection.clientinfo.category = "";
+										clientConnection.clientinfo.guess = "";
+										clientConnection.clientinfo.wordguess = "";
+										clientConnection.clientinfo.guessedfoods = false;
+										clientConnection.clientinfo.guessedgames = false;
+										clientConnection.clientinfo.guessedcountries = false;
+										clientConnection.clientinfo.playagain = false;
+										tempinfo.playagain = clientConnection.clientinfo.playagain;
+										tempinfo.won = clientConnection.clientinfo.won;
+										tempinfo.lost = clientConnection.clientinfo.lost;
+										tempinfo.category = clientConnection.clientinfo.category;
+										tempinfo.guess = clientConnection.clientinfo.guess;
+										tempinfo.wordguess = clientConnection.clientinfo.wordguess;
+										tempinfo.guessedfoods = clientConnection.clientinfo.guessedfoods;
+										tempinfo.guessedgames = clientConnection.clientinfo.guessedgames;
+										tempinfo.guessedcountries = clientConnection.clientinfo.guessedcountries;
+										clientConnection.send(tempinfo);
+										categorynogamesscene(primaryStage);
+								    });
+				    				pause.play();
 								}
-								else if(clientConnection.clientinfo.guessedcountries==true)
+								else if(clientConnection.clientinfo.guessedcountries==true || (clientConnection.clientinfo.playagain == true && countriesguessed ==true))
 								{
 									//client guessed countries
-									Wordguess tempinfo = new Wordguess();
-									countriesguessed = true;
-									clientConnection.clientinfo.category = "";
-									clientConnection.clientinfo.guess = "";
-									clientConnection.clientinfo.wordguess = "";
-									clientConnection.clientinfo.guessedfoods = false;
-									clientConnection.clientinfo.guessedgames = false;
-									clientConnection.clientinfo.guessedcountries = false;
-									tempinfo.won = clientConnection.clientinfo.won;
-									tempinfo.lost = clientConnection.clientinfo.lost;
-									tempinfo.category = clientConnection.clientinfo.category;
-									tempinfo.guess = clientConnection.clientinfo.guess;
-									tempinfo.wordguess = clientConnection.clientinfo.wordguess;
-									tempinfo.guessedfoods = clientConnection.clientinfo.guessedfoods;
-									tempinfo.guessedgames = clientConnection.clientinfo.guessedgames;
-									tempinfo.guessedcountries = clientConnection.clientinfo.guessedcountries;
-									clientConnection.send(tempinfo);
-									categorynocountriesscene(primaryStage);
+									PauseTransition pause = new PauseTransition(Duration.seconds(2));
+								    pause.setOnFinished(event -> {
+										Wordguess tempinfo = new Wordguess();
+										countriesguessed = true;
+										clientConnection.clientinfo.category = "";
+										clientConnection.clientinfo.guess = "";
+										clientConnection.clientinfo.wordguess = "";
+										clientConnection.clientinfo.guessedfoods = false;
+										clientConnection.clientinfo.guessedgames = false;
+										clientConnection.clientinfo.guessedcountries = false;
+										clientConnection.clientinfo.playagain = false;
+										tempinfo.playagain = clientConnection.clientinfo.playagain;
+										tempinfo.won = clientConnection.clientinfo.won;
+										tempinfo.lost = clientConnection.clientinfo.lost;
+										tempinfo.category = clientConnection.clientinfo.category;
+										tempinfo.guess = clientConnection.clientinfo.guess;
+										tempinfo.wordguess = clientConnection.clientinfo.wordguess;
+										tempinfo.guessedfoods = clientConnection.clientinfo.guessedfoods;
+										tempinfo.guessedgames = clientConnection.clientinfo.guessedgames;
+										tempinfo.guessedcountries = clientConnection.clientinfo.guessedcountries;
+										clientConnection.send(tempinfo);
+										categorynocountriesscene(primaryStage);
+								    });
+				    				pause.play();
 								}
 								else if(clientConnection.clientinfo.playagain == true)
 								{
-									Wordguess tempinfo = new Wordguess();
-									clientConnection.clientinfo.category = "";
-									clientConnection.clientinfo.guess = "";
-									clientConnection.clientinfo.wordguess = "";
-									clientConnection.clientinfo.guessedfoods = false;
-									clientConnection.clientinfo.guessedgames = false;
-									clientConnection.clientinfo.guessedcountries = false;
-									clientConnection.clientinfo.playagain = false;
-									tempinfo.won = clientConnection.clientinfo.won;
-									tempinfo.lost = clientConnection.clientinfo.lost;
-									tempinfo.category = clientConnection.clientinfo.category;
-									tempinfo.guess = clientConnection.clientinfo.guess;
-									tempinfo.wordguess = clientConnection.clientinfo.wordguess;
-									tempinfo.guessedfoods = clientConnection.clientinfo.guessedfoods;
-									tempinfo.guessedgames = clientConnection.clientinfo.guessedgames;
-									tempinfo.guessedcountries = clientConnection.clientinfo.guessedcountries;
-									tempinfo.playagain = clientConnection.clientinfo.playagain;
-									clientConnection.send(tempinfo);
-									categoryscene(primaryStage);
+									PauseTransition pause = new PauseTransition(Duration.seconds(2));
+								    pause.setOnFinished(event -> {
+										Wordguess tempinfo = new Wordguess();
+										clientConnection.clientinfo.category = "";
+										clientConnection.clientinfo.guess = "";
+										clientConnection.clientinfo.wordguess = "";
+										clientConnection.clientinfo.guessedfoods = false;
+										clientConnection.clientinfo.guessedgames = false;
+										clientConnection.clientinfo.guessedcountries = false;
+										clientConnection.clientinfo.playagain = false;
+										tempinfo.won = clientConnection.clientinfo.won;
+										tempinfo.lost = clientConnection.clientinfo.lost;
+										tempinfo.category = clientConnection.clientinfo.category;
+										tempinfo.guess = clientConnection.clientinfo.guess;
+										tempinfo.wordguess = clientConnection.clientinfo.wordguess;
+										tempinfo.guessedfoods = clientConnection.clientinfo.guessedfoods;
+										tempinfo.guessedgames = clientConnection.clientinfo.guessedgames;
+										tempinfo.guessedcountries = clientConnection.clientinfo.guessedcountries;
+										tempinfo.playagain = clientConnection.clientinfo.playagain;
+										clientConnection.send(tempinfo);
+										categoryscene(primaryStage);
+								    });
+				    				pause.play();
 								}
 								else
 								{
@@ -813,6 +855,13 @@ public class WordGuessClient extends Application {
         { 
             return false;
         } 
+	}
+	public void wait(int seconds)
+	{
+		PauseTransition pause = new PauseTransition(Duration.seconds(seconds));
+	    pause.setOnFinished(event -> {
+	    });
+	    pause.play();
 	}
 
 }
